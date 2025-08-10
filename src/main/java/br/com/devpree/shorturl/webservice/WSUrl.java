@@ -31,6 +31,11 @@ public class WSUrl implements Serializable {
 	private URL serviceAccountStream;
 	private FirebaseOptions firebaseOptions;
 	
+	/**
+	 * Init Firebase Config
+	 * 
+	 * TODO - Find a better to init this config 
+	 */
 	public WSUrl() {
 		try {
 			serviceAccountStream = this.getClass().getClassLoader().getResource("firebase-service-account.json");
@@ -46,6 +51,13 @@ public class WSUrl implements Serializable {
 		}
 	}
 	
+	/**
+	 * Creates a short URL for a Large URL. Sets a customUrl or a randomURL with specific or default lenght.
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
