@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShortUrl</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+
+<div class="container p-5 bg-light rounded shadow" style="max-width: 700px;">
+    <h1 class="text-center">ShortUrl Creator</h1>
+    
+    <div id="message-request" class="d-none alert mt-2" role="alert"></div>
+
+    <label for="longUrl">Insert Long Url</label>
+    <input id="longUrl" type="text" class="form-control" placeholder="Long url" aria-label="Long Url" aria-describedby="visible-addon">
+    
+    <label for="customId" class="mt-2">Custom Alias</label>
+    <input id="customId" type="text" class="form-control" placeholder="Example: my-portfolio-name" aria-label="Custom Alias" aria-describedby="visible-addon">
+    
+    <button id="btnShorten" class="btn btn-primary mt-2 w-100" type="submit">Shorten</button>
+</div>
+
+<script>
+document.getElementById('btnShorten').addEventListener('click', onShortenUrl)
+function onShortenUrl() {
+    const longUrl = document.getElementById('longUrl').value;
+    const customId = document.getElementById('customId').value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.devpree.com.br/shorturl/create");
+    xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+    const body = JSON.stringify({
+        completeUrl: longUrl,
+        customId: customId,
+        length: 6
+    });
+
+    const messageRequest = document.getElementById('message-request');
+
+    xhr.onload = () => {
+        messageRequest.classList.remove("alert-danger");
+        messageRequest.classList.remove("alert-success");
+        messageRequest.classList.remove("d-none");
+        messageRequest.classList.add("d-flex");
+
+        
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            messageRequest.innerText = JSON.parse(xhr.responseText).shortUrl
+            messageRequest.classList.add("alert-success");
+        } else {
+            messageRequest.innerText = JSON.parse(xhr.responseText).message
+            messageRequest.classList.add("alert-danger");
+        }
+    };
+
+    xhr.send(body);
+}
+
+</script>
+</body>
+</html>
