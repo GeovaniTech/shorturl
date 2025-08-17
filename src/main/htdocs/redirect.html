@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+<body>
+     <script>  
+        const path = window.location.href;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://api.devpree.com.br/shorturl/get/original?shortUrl=" + path);
+        xhr.send();
+        xhr.responseType = "text";
+            
+        xhr.onload = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                window.location.replace(xhr.response);
+            } else {
+                window.location.replace("https://shorturl.devpree.com.br");
+            }
+        };
+     </script>
+</body>
+</html>
