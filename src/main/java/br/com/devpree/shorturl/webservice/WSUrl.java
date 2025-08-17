@@ -9,7 +9,6 @@ import com.google.firebase.FirebaseOptions;
 
 import br.com.devpree.shorturl.repository.interfaces.IUrlRepository;
 import br.com.devpree.shorturl.request.TOCreateUrlRequestRestModel;
-import br.com.devpree.shorturl.request.TOGetOriginalUrlResquestRestModel;
 import br.com.devpree.shorturl.response.TOCreateUrlResponseRestModel;
 import br.com.devpree.shorturl.to.TOUrlDetails;
 import br.com.devpree.shorturl.util.StringUtil;
@@ -23,7 +22,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/shorturl/url")
+@Path("/url")
 public class WSUrl implements Serializable {
 	
 	private static final long serialVersionUID = -2339071140393062309L;
