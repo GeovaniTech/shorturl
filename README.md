@@ -1,6 +1,6 @@
 # ShortUrl Creator
 
-Application to shorten long urls. You can generate a randonm String with 6 letters or set a custom alias.
+Application to shorten long urls. You can generate a random or set a custom alias.
 
 > Short url with customId: <a href="https://ly.devpree.com.br/le-festin">https://ly.devpree.com.br/le-festin</a>
 
