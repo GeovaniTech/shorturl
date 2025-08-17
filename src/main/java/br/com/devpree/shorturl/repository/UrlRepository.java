@@ -1,9 +1,11 @@
 package br.com.devpree.shorturl.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 
 import br.com.devpree.shorturl.repository.interfaces.IUrlRepository;
 import br.com.devpree.shorturl.to.TOUrlDetails;
@@ -15,6 +17,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UrlRepository extends FirebaseRepository implements IUrlRepository {
 	private static String URLS_COLLECTION = "urls";
+	private static String BASE_URL = "https://shorturl.devpree.com.br/";
 	
 	@Override
 	public TOUrlDetails getTOUrlByShortUrl(String shortUrl) throws Exception {
@@ -40,13 +43,34 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		
 		TOUrlDetails urlData = new TOUrlDetails();
 		urlData.setCompleteUrl(completeUrl);
-		urlData.setShortUrl(shortUrl);
+		urlData.setShortUrl(BASE_URL + shortUrl);
 		urlData.setCreationDate(new Date());
 		urlData.setViews(0L);
 		
 		document.set(urlData);
 		
 		return urlData;
+	}
+	
+	@Override
+	public String getCompleteURLIncreasingViews(String shortUrl) throws Exception {
+		List<QueryDocumentSnapshot> documents = db.collection(URLS_COLLECTION).whereEqualTo("shortUrl", shortUrl).get().get().getDocuments();
+		
+		if (documents.isEmpty()) {
+			return null;
+		}
+		
+		DocumentReference document = documents.get(0).getReference();
+		DocumentSnapshot snapshot = document.get().get();
+		
+		if (snapshot != null && snapshot.exists()) {
+			Long views = snapshot.getLong("views") + 1L;
+			document.update("views", views);
+			
+			return snapshot.getString("completeUrl");
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -65,4 +89,6 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		
 		return shortUrl;
 	}
+
+
 }

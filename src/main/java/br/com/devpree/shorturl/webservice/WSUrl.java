@@ -9,18 +9,21 @@ import com.google.firebase.FirebaseOptions;
 
 import br.com.devpree.shorturl.repository.interfaces.IUrlRepository;
 import br.com.devpree.shorturl.request.TOCreateUrlRequestRestModel;
+import br.com.devpree.shorturl.request.TOGetOriginalUrlResquestRestModel;
 import br.com.devpree.shorturl.response.TOCreateUrlResponseRestModel;
 import br.com.devpree.shorturl.to.TOUrlDetails;
 import br.com.devpree.shorturl.util.StringUtil;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/url")
+@Path("/shorturl/url")
 public class WSUrl implements Serializable {
 	
 	private static final long serialVersionUID = -2339071140393062309L;
@@ -87,5 +90,38 @@ public class WSUrl implements Serializable {
 		response.setShortUrl(urlDetails.getShortUrl());
 		
 		return Response.ok(response).build();
+	}
+	
+	/**
+	 * Returns the original url by the short url. 
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@Path("/get/original")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOriginalUrl(@QueryParam("shortUrl") String shortUrl) {
+		try {
+			if (StringUtil.isNull(shortUrl)) {
+				return Response.status(Response.Status.BAD_REQUEST)
+						.entity(new Exception("Field shortUrl is Mandatory"))
+						.build();
+			}
+			
+			String originalUrl = urlRepository.getCompleteURLIncreasingViews(shortUrl);
+			
+			if (StringUtil.isNull(originalUrl)) {
+				return Response.status(Response.Status.NOT_FOUND)
+						.entity(new Exception("The URL is not available"))
+						.build();
+			}
+			
+			return Response.ok(originalUrl).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(e)
+					.build();
+		}
 	}
 }

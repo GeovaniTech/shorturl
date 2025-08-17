@@ -21,4 +21,13 @@ public interface IUrlRepository {
 	 * @throws Exception
 	 */
 	public TOUrlDetails createShortUrl(String completeUrl, Integer length) throws Exception;
+	
+	/**
+	 * Returns the original URL and increase the views
+	 * 
+	 * @param shortUrl
+	 * @return
+	 * @throws Exception
+	 */
+	public String getCompleteURLIncreasingViews(String shortUrl) throws Exception;
 }
