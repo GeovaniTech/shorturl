@@ -37,8 +37,9 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 	}
 
 	@Override
-	public TOUrlDetails createShortUrl(String completeUrl, Integer length) throws Exception {
-		String shortUrl = this.getShortUrl(length);
+	public TOUrlDetails createShortUrl(String completeUrl, String customId, Integer length) throws Exception {
+		String shortUrl = StringUtil.isNull(customId) ? this.getShortUrl(length) : customId;
+		
 		DocumentReference document = db.collection(URLS_COLLECTION).document(shortUrl);
 		
 		TOUrlDetails urlData = new TOUrlDetails();

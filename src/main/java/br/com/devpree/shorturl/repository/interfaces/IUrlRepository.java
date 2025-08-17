@@ -20,7 +20,7 @@ public interface IUrlRepository {
 	 * @return
 	 * @throws Exception
 	 */
-	public TOUrlDetails createShortUrl(String completeUrl, Integer length) throws Exception;
+	public TOUrlDetails createShortUrl(String completeUrl, String customId, Integer length) throws Exception;
 	
 	/**
 	 * Returns the original URL and increase the views

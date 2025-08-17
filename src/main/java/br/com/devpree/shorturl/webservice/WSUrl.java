@@ -73,10 +73,8 @@ public class WSUrl implements Serializable {
 					.build();
 		}
 		
-		String shortUrl = request.getCustomId();
-		
-		if (StringUtil.isNotNull(shortUrl)) {
-			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(shortUrl) != null;
+		if (StringUtil.isNotNull(request.getCustomId())) {
+			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomId()) != null;
 			
 			if (existsUrlWithCustomId) {
 				return Response.status(Response.Status.CONFLICT)
@@ -85,7 +83,7 @@ public class WSUrl implements Serializable {
 			}
 		}
 		
-		TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getCompleteUrl(), request.getLength());
+		TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getCompleteUrl(), request.getCustomId(), request.getLength());
 		response.setShortUrl(urlDetails.getShortUrl());
 		
 		return Response.ok(response).build();
