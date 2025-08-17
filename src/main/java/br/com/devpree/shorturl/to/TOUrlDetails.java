@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TOUrlDetails {
 	private String shortUrl;
-	private String completeUrl;
+	private String longUrl;
 	private Date creationDate;
 	private long views;
 	
@@ -14,11 +14,11 @@ public class TOUrlDetails {
 	public void setShortUrl(String shortUrl) {
 		this.shortUrl = shortUrl;
 	}
-	public String getCompleteUrl() {
-		return completeUrl;
+	public String getLongUrl() {
+		return longUrl;
 	}
-	public void setCompleteUrl(String completeUrl) {
-		this.completeUrl = completeUrl;
+	public void setLongUrl(String longUrl) {
+		this.longUrl = longUrl;
 	}
 	public Date getCreationDate() {
 		return creationDate;

@@ -16,8 +16,8 @@
     <label for="longUrl">Insert Long Url</label>
     <input id="longUrl" type="text" class="form-control" placeholder="Long url" aria-label="Long Url" aria-describedby="visible-addon">
     
-    <label for="customId" class="mt-2">Custom Alias</label>
-    <input id="customId" type="text" class="form-control" placeholder="Example: my-portfolio-name" aria-label="Custom Alias" aria-describedby="visible-addon">
+    <label for="customAlias" class="mt-2">Custom Alias</label>
+    <input id="customAlias" type="text" class="form-control" placeholder="Example: my-portfolio-name" aria-label="Custom Alias" aria-describedby="visible-addon">
     
     <button id="btnShorten" class="btn btn-primary mt-2 w-100" type="submit">Shorten</button>
 </div>
@@ -26,15 +26,15 @@
 document.getElementById('btnShorten').addEventListener('click', onShortenUrl)
 function onShortenUrl() {
     const longUrl = document.getElementById('longUrl').value;
-    const customId = document.getElementById('customId').value;
+    const customAlias = document.getElementById('customAlias').value;
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "https://api.devpree.com.br/shorturl/create");
     xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
     const body = JSON.stringify({
-        completeUrl: longUrl,
-        customId: customId,
+        longUrl: longUrl,
+        customAlias: customAlias,
         length: 6
     });
 
@@ -46,7 +46,6 @@ function onShortenUrl() {
         messageRequest.classList.remove("d-none");
         messageRequest.classList.add("d-flex");
 
-        
         if (xhr.readyState == 4 && xhr.status == 200) {
             messageRequest.innerText = JSON.parse(xhr.responseText).shortUrl
             messageRequest.classList.add("alert-success");

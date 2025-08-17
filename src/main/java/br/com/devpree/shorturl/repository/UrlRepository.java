@@ -17,7 +17,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UrlRepository extends FirebaseRepository implements IUrlRepository {
 	private static String URLS_COLLECTION = "urls";
-	private static String BASE_URL = "https://shorturl.devpree.com.br/";
+	private static String BASE_URL = "https://ly.devpree.com.br/";
 	
 	@Override
 	public TOUrlDetails getTOUrlByShortUrl(String shortUrl) throws Exception {
@@ -28,7 +28,7 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		if (documentSnapshot != null && documentSnapshot.exists()) {
 			urlDetails = new TOUrlDetails();
 			urlDetails.setShortUrl(documentSnapshot.getId());
-			urlDetails.setCompleteUrl(documentSnapshot.getString("completeUrl"));
+			urlDetails.setLongUrl(documentSnapshot.getString("longUrl"));
 			urlDetails.setCreationDate(documentSnapshot.getDate("creationDate"));
 			urlDetails.setViews(documentSnapshot.getLong("views"));
 		}
@@ -43,7 +43,7 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		DocumentReference document = db.collection(URLS_COLLECTION).document(shortUrl);
 		
 		TOUrlDetails urlData = new TOUrlDetails();
-		urlData.setCompleteUrl(completeUrl);
+		urlData.setLongUrl(completeUrl);
 		urlData.setShortUrl(BASE_URL + shortUrl);
 		urlData.setCreationDate(new Date());
 		urlData.setViews(0L);
@@ -68,7 +68,7 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 			Long views = snapshot.getLong("views") + 1L;
 			document.update("views", views);
 			
-			return snapshot.getString("completeUrl");
+			return snapshot.getString("longUrl");
 		}
 		
 		return null;

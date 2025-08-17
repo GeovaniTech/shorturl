@@ -67,23 +67,23 @@ public class WSUrl implements Serializable {
 	public Response create(TOCreateUrlRequestRestModel request) throws Exception { 
 		TOCreateUrlResponseRestModel response = new TOCreateUrlResponseRestModel();
 		
-		if (StringUtil.isNull(request.getCompleteUrl())) {
+		if (StringUtil.isNull(request.getLongUrl())) {
 			return Response.status(Response.Status.BAD_REQUEST)
-					.entity(new Exception("Field completeUrl is Mandatory"))
+					.entity(new Exception("Field longUrl is Mandatory"))
 					.build();
 		}
 		
-		if (StringUtil.isNotNull(request.getCustomId())) {
-			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomId()) != null;
+		if (StringUtil.isNotNull(request.getCustomAlias())) {
+			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomAlias()) != null;
 			
 			if (existsUrlWithCustomId) {
 				return Response.status(Response.Status.CONFLICT)
-						.entity(new Exception("CustomId is already in use for another URL. Change the customId to continue"))
+						.entity(new Exception("CustomAlias is already in use for another URL. Change the customAlias to continue"))
 						.build();
 			}
 		}
 		
-		TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getCompleteUrl(), request.getCustomId(), request.getLength());
+		TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getLongUrl(), request.getCustomAlias(), request.getLength());
 		response.setShortUrl(urlDetails.getShortUrl());
 		
 		return Response.ok(response).build();
