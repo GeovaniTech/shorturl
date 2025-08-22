@@ -73,6 +73,12 @@ public class WSUrl implements Serializable {
 					.build();
 		}
 		
+		if (request.getLength() != null && request.getLength() == 0) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity(new Exception("Field length needs to higher than 0"))
+					.build();
+		}
+		
 		if (StringUtil.isNotNull(request.getCustomAlias())) {
 			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomAlias()) != null;
 			
