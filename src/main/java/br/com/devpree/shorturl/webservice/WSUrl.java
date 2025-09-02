@@ -14,6 +14,7 @@ import br.com.devpree.shorturl.response.TOCreateUrlResponseRestModel;
 import br.com.devpree.shorturl.response.TODeleteUrlResponseRestModel;
 import br.com.devpree.shorturl.to.TOUrlDetails;
 import br.com.devpree.shorturl.util.StringUtil;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -65,6 +66,7 @@ public class WSUrl implements Serializable {
 	 */
 	@Path("/create")
 	@PUT
+	@RolesAllowed({"User"})
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(TOCreateUrlRequestRestModel request) throws Exception { 
@@ -112,6 +114,7 @@ public class WSUrl implements Serializable {
 	 */
 	@Path("/get/original")
 	@GET
+	@RolesAllowed({"User"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOriginalUrl(@QueryParam("shortUrl") String shortUrl) {
 		try {
@@ -146,6 +149,7 @@ public class WSUrl implements Serializable {
 	 */
 	@Path("/delete")
 	@DELETE
+	@RolesAllowed({"User"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUrl(TODeleteUrlRequestRestModel request) {
 		try {

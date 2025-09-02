@@ -44,3 +44,8 @@ nb-configuration.xml
 # TLS Certificates
 i.certs/
 firebase-service-account.json
+privateKey.pem
+publicKey.pem
+rsaPrivateKey.pem
+application.properties
+GenerateToken.java
