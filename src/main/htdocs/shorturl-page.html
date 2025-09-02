@@ -30,7 +30,7 @@ function onShortenUrl() {
     const customAlias = document.getElementById('customAlias').value;
 
     const xhr = new XMLHttpRequest();
-    xhr.open("PUT", "https://api.devpree.com.br/shorturl/create");
+    xhr.open("PUT", "/api/shorturl/create");
     xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
     const body = JSON.stringify({
