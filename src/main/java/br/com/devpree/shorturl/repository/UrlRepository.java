@@ -7,6 +7,7 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 
+import br.com.devpree.shorturl.exception.UrlNotFoundException;
 import br.com.devpree.shorturl.repository.interfaces.IUrlRepository;
 import br.com.devpree.shorturl.to.TOUrlDetails;
 import br.com.devpree.shorturl.util.StringUtil;
@@ -74,6 +75,18 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		return null;
 	}
 	
+	@Override
+	public void deleteUrl(String shortUrl) throws Exception {
+		List<QueryDocumentSnapshot> documents = db.collection(URLS_COLLECTION).whereEqualTo("shortUrl", shortUrl).get().get().getDocuments();
+		
+		if (documents.isEmpty()) {
+			throw new UrlNotFoundException("Url does not exist");
+		}
+		
+		DocumentReference document = documents.get(0).getReference();
+		document.delete();
+	}
+	
 	/**
 	 * Returns a shortUrlId that does not exists on the database
 	 * 
@@ -90,6 +103,4 @@ public class UrlRepository extends FirebaseRepository implements IUrlRepository 
 		
 		return shortUrl;
 	}
-
-
 }

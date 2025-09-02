@@ -9,11 +9,14 @@ import com.google.firebase.FirebaseOptions;
 
 import br.com.devpree.shorturl.repository.interfaces.IUrlRepository;
 import br.com.devpree.shorturl.request.TOCreateUrlRequestRestModel;
+import br.com.devpree.shorturl.request.TODeleteUrlRequestRestModel;
 import br.com.devpree.shorturl.response.TOCreateUrlResponseRestModel;
+import br.com.devpree.shorturl.response.TODeleteUrlResponseRestModel;
 import br.com.devpree.shorturl.to.TOUrlDetails;
 import br.com.devpree.shorturl.util.StringUtil;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -65,34 +68,40 @@ public class WSUrl implements Serializable {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(TOCreateUrlRequestRestModel request) throws Exception { 
-		TOCreateUrlResponseRestModel response = new TOCreateUrlResponseRestModel();
-		
-		if (StringUtil.isNull(request.getLongUrl())) {
-			return Response.status(Response.Status.BAD_REQUEST)
-					.entity(new Exception("Field longUrl is Mandatory"))
-					.build();
-		}
-		
-		if (request.getLength() != null && request.getLength() == 0) {
-			return Response.status(Response.Status.BAD_REQUEST)
-					.entity(new Exception("Field length needs to higher than 0"))
-					.build();
-		}
-		
-		if (StringUtil.isNotNull(request.getCustomAlias())) {
-			boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomAlias()) != null;
+		try {
+			TOCreateUrlResponseRestModel response = new TOCreateUrlResponseRestModel();
 			
-			if (existsUrlWithCustomId) {
-				return Response.status(Response.Status.CONFLICT)
-						.entity(new Exception("CustomAlias is already in use for another URL. Change the customAlias to continue"))
+			if (StringUtil.isNull(request.getLongUrl())) {
+				return Response.status(Response.Status.BAD_REQUEST)
+						.entity(new Exception("Field longUrl is Mandatory"))
 						.build();
 			}
+			
+			if (request.getLength() != null && request.getLength() == 0) {
+				return Response.status(Response.Status.BAD_REQUEST)
+						.entity(new Exception("Field length needs to higher than 0"))
+						.build();
+			}
+			
+			if (StringUtil.isNotNull(request.getCustomAlias())) {
+				boolean existsUrlWithCustomId = urlRepository.getTOUrlByShortUrl(request.getCustomAlias()) != null;
+				
+				if (existsUrlWithCustomId) {
+					return Response.status(Response.Status.CONFLICT)
+							.entity(new Exception("CustomAlias is already in use for another URL. Change the customAlias to continue"))
+							.build();
+				}
+			}
+			
+			TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getLongUrl(), request.getCustomAlias(), request.getLength());
+			response.setShortUrl(urlDetails.getShortUrl());
+			
+			return Response.ok(response).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(e)
+					.build();
 		}
-		
-		TOUrlDetails urlDetails = urlRepository.createShortUrl(request.getLongUrl(), request.getCustomAlias(), request.getLength());
-		response.setShortUrl(urlDetails.getShortUrl());
-		
-		return Response.ok(response).build();
 	}
 	
 	/**
@@ -121,6 +130,37 @@ public class WSUrl implements Serializable {
 			}
 			
 			return Response.ok(originalUrl).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(e)
+					.build();
+		}
+	}
+	
+	
+	/**
+	 * Delete URL document from database
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@Path("/delete")
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteUrl(TODeleteUrlRequestRestModel request) {
+		try {
+			if (StringUtil.isNull(request.getShortUrl())) {
+				return Response.status(Response.Status.BAD_REQUEST)
+						.entity(new Exception("Field shortUrl is Mandatory"))
+						.build();
+			}
+			
+			urlRepository.deleteUrl(request.getShortUrl());
+			
+			TODeleteUrlResponseRestModel response = new TODeleteUrlResponseRestModel();
+			response.setMessage("Url " + request.getShortUrl() +  " deleted from database");
+			
+			return Response.ok().entity(response).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(e)

@@ -30,4 +30,12 @@ public interface IUrlRepository {
 	 * @throws Exception
 	 */
 	public String getCompleteURLIncreasingViews(String shortUrl) throws Exception;
+	
+	/**
+	 * Delete URL document from Firebase Firestore
+	 * 
+	 * @param shortUrl
+	 * @throws Exception
+	 */
+	public void deleteUrl(String shortUrl) throws Exception;
 }
