@@ -18,7 +18,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UrlRepository extends FirebaseRepository implements IUrlRepository {
 	private static String URLS_COLLECTION = "urls";
-	private static String BASE_URL = "https://ly.devpree.com.br/";
+	private static String BASE_URL = "https://reld.me/";
 	
 	@Override
 	public TOUrlDetails getTOUrlByShortUrl(String shortUrl) throws Exception {
