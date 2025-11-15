@@ -3,17 +3,17 @@
 Application to shorten long urls. You can generate a random or set a custom alias.
 
 ## Example Short URL  
-[![Short URL](https://img.shields.io/badge/ly.devpree.com.br/le--festin-blue?logo=link&logoColor=white)](https://ly.devpree.com.br/le-festin)  
+[![Short URL](https://img.shields.io/badge/reld.me/le--festin-blue?logo=link&logoColor=white)](https://reld.me/le-festin)  
 
 ---
 
 ## 📘 API Documentation  
-[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-Explore-green?logo=swagger&logoColor=white)](https://shorturl-swagger.devpree.com.br/q/swagger-ui)  
+[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-Explore-green?logo=swagger&logoColor=white)](https://swagger.reld.me/q/swagger-ui)  
 
 ---
 
 ## 🌐 Web Application  
-[![Web App](https://img.shields.io/badge/ShortURL%20App-Access-blue?logo=google-chrome&logoColor=white)](https://shorturl.devpree.com.br)  
+[![Web App](https://img.shields.io/badge/Reld%20App-Access-blue?logo=google-chrome&logoColor=white)](https://app.reld.me)  
 
 ## ⚙️ Technologies
 
