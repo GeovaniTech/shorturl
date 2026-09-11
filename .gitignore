@@ -44,3 +44,4 @@ nb-configuration.xml
 # TLS Certificates
 i.certs/
 firebase-service-account.json
+application.properties
